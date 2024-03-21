@@ -193,10 +193,7 @@ model=Unet(image_height,image_width, image_channels,n_classes).Unet_model(n_filt
 
 metrics=['accuracy',IoU]
 
-# model= Unet_model(n_clasess,
-#                       image_height,
-#                       image_width,
-#                       image_channels)
+
 
     
 ##Loss Function
@@ -236,101 +233,101 @@ tf.keras.backend.clear_session()
 model.compile(optimizer='adam',loss=totalLoss,metrics=metrics)
 
 
-# #Creating a callback class
-# from Ipython.display import clear_output
-# %matplotlib inline
-# class PlotLoss(keras.callbacks.callback):
-#     def on_train_begin(self,logs={}):
-#         self.i=0
-#         self.x=[]
-#         self.losses=[]
-#         self.val_losses=[]
-#         self.fig=plt.figure()
-#         self.logs=[]
-#     def on_epoch_end(self,epoch,logs={}):
-#         self.logs.append(logs)
-#         self.x.append(self.i)
-#         self.losses.append(logs.get('loss'))
-#         self.val_losses.append(logs.get('val_loss'))
-#         self.i+=1
+#Creating a callback class
+from Ipython.display import clear_output
+%matplotlib inline
+class PlotLoss(keras.callbacks.callback):
+    def on_train_begin(self,logs={}):
+        self.i=0
+        self.x=[]
+        self.losses=[]
+        self.val_losses=[]
+        self.fig=plt.figure()
+        self.logs=[]
+    def on_epoch_end(self,epoch,logs={}):
+        self.logs.append(logs)
+        self.x.append(self.i)
+        self.losses.append(logs.get('loss'))
+        self.val_losses.append(logs.get('val_loss'))
+        self.i+=1
 
-#         clear_output(wait=True)
-#         plt.plot(self.x,self.losses,label='Loss')
-#         plt.plot(self.x,self.val_losses,label='Val Loss')
-#         plt.legend()
-#         plt.show();
+        clear_output(wait=True)
+        plt.plot(self.x,self.losses,label='Loss')
+        plt.plot(self.x,self.val_losses,label='Val Loss')
+        plt.legend()
+        plt.show();
 
-# plotLoss=PlotLoss()
+plotLoss=PlotLoss()
 
-# model_progress_history=model.fit(x_train,y_train,batch_size=15, 
-#                                  verbose=1,
-#                                  epochs=10,
-#                                  validation_data=(x_test,y_test),
-#                                  callback=[plotLoss],
-#                                  shuffle=True)
+model_progress_history=model.fit(x_train,y_train,batch_size=15, 
+                                 verbose=1,
+                                 epochs=10,
+                                 validation_data=(x_test,y_test),
+                                 callback=[plotLoss],
+                                 shuffle=True)
 
-# ##Visualization of loss
+##Visualization of loss
 
-# loss=model_progress_history.history['loss']
-# val_loss=model_progress_history.history['val_loss']
+loss=model_progress_history.history['loss']
+val_loss=model_progress_history.history['val_loss']
 
-# epochs=range(0,len(loss)+1)
-# plt.plot(epochs,loss,'r',label='Training Loss')
-# plt.plot(epochs,val_loss,'b',label='Validation Loss')
-# plt.title('Training Loss vs Validation Loss')
-# plt.xlabel('Epochs')
-# plt.ylabel('Loss')
-# plt.legends()
-# plt.show()
+epochs=range(0,len(loss)+1)
+plt.plot(epochs,loss,'r',label='Training Loss')
+plt.plot(epochs,val_loss,'b',label='Validation Loss')
+plt.title('Training Loss vs Validation Loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legends()
+plt.show()
 
-# iou=model_progress_history.history['IoU']
-# val_iou=model_progress_history.history['val_IoU']
-# epochs=range(0,len(loss)+1)
-# plt.plot(epochs,loss,'r',label='IoU')
-# plt.plot(epochs,val_loss,'b',label='Validation IoU')
-# plt.title('Training IoU vs Validation IoU')
-# plt.xlabel('Epochs')
-# plt.ylabel('Loss')
-# plt.legends()
-# plt.show()
-
-
-# ##Model Prediction
-
-# y_pred=model.predict(x_test)
-# #returns indices of the max element of the array in a particular axis. 
-# #np.argmax(y_pred, axis=3) applies argmax along the last axis (axis=3), which represents the class probabilities. 
-# #This operation returns the index of the class with the highest probability for each pixel in the image. The resulting array y_pred_argmax will have the same shape as y_pred, 
-# #except the last axis (n_clases) is removed, leaving an array of shape (num_samples, height, width) 
-# #containing the predicted class labels for each pixel.
-# y_pred_argmax=np.argmax(y_pred,axis=3)
-# y_test_argmax=np.argmax(y_test,axis=3)
+iou=model_progress_history.history['IoU']
+val_iou=model_progress_history.history['val_IoU']
+epochs=range(0,len(loss)+1)
+plt.plot(epochs,loss,'r',label='IoU')
+plt.plot(epochs,val_loss,'b',label='Validation IoU')
+plt.title('Training IoU vs Validation IoU')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legends()
+plt.show()
 
 
-# ##Comparing images
-# image_number=random.randit(0,len(x_test))
-# test_image=x_test[image_number]
-# ground_truth_image=y_test_argmax[image_number]
-# #The function np.expand_dims(test_image, 0) is used to add an extra dimension to the input test_image array at the specified position (position 0 in this case). 
-# #This is often necessary when you want to pass a single sample to a model that expects input data in a certain shape
-# test_image_input=np.expand_dims(test_image,0)
+##Model Prediction
 
-# prediction=model.predict(test_image_input)
-# pred_image=np.argmax(prediction,axis=3)[0,:,:]
-
-# plt.figure(figsize=(14,8))
-# plt.sublot(231)
-# plt.title('Original Image')
-# plt.imshow(test_image)
-# plt.sublot(232)
-# plt.title('Ground Truth Image')
-# plt.imshow(ground_truth_image)
-# plt.sublot(233)
-# plt.title('Predicted Image')
-# plt.imshow(pred_image)
+y_pred=model.predict(x_test)
+#returns indices of the max element of the array in a particular axis. 
+#np.argmax(y_pred, axis=3) applies argmax along the last axis (axis=3), which represents the class probabilities. 
+#This operation returns the index of the class with the highest probability for each pixel in the image. The resulting array y_pred_argmax will have the same shape as y_pred, 
+#except the last axis (n_clases) is removed, leaving an array of shape (num_samples, height, width) 
+#containing the predicted class labels for each pixel.
+y_pred_argmax=np.argmax(y_pred,axis=3)
+y_test_argmax=np.argmax(y_test,axis=3)
 
 
+##Comparing images
+image_number=random.randit(0,len(x_test))
+test_image=x_test[image_number]
+ground_truth_image=y_test_argmax[image_number]
+#The function np.expand_dims(test_image, 0) is used to add an extra dimension to the input test_image array at the specified position (position 0 in this case). 
+#This is often necessary when you want to pass a single sample to a model that expects input data in a certain shape
+test_image_input=np.expand_dims(test_image,0)
 
-# ##Saving Model
-# model.save('D:\Data Science\Python Assignment\Computer Vision\Model\Unet Satelitte Segmentation.h5')
+prediction=model.predict(test_image_input)
+pred_image=np.argmax(prediction,axis=3)[0,:,:]
+
+plt.figure(figsize=(14,8))
+plt.sublot(231)
+plt.title('Original Image')
+plt.imshow(test_image)
+plt.sublot(232)
+plt.title('Ground Truth Image')
+plt.imshow(ground_truth_image)
+plt.sublot(233)
+plt.title('Predicted Image')
+plt.imshow(pred_image)
+
+
+
+##Saving Model
+model.save('D:\Data Science\Python Assignment\Computer Vision\Model\Unet Satelitte Segmentation.h5')
 
