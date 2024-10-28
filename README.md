@@ -1,4 +1,4 @@
-# Satelite Image Processing with U-Net
+# Satellite Image Processing with U-Net
 
 This repository contains an implementation of semantic segmentation using the U-Net architecture. The model is trained on a dataset of satellite images, performing pixel-level classification to identify different classes within the images.
 
